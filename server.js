@@ -8,14 +8,16 @@ const server = express();
 server.use(express.json());
 // server.use(cors({ origin: "http://localhost:3003" }));
 
+
+
 // middleware
 
 // import sub-applications
-const actionModel = require('./actions/actionModel');
-const projectModel = require('./projects/projectModel');
+const actions = require('./actions/actions');
+const projects = require('./projects/projects');
 
 // route handlers
-server.use('/actions', actionModel);
-server.use('/projects', projectModel);
+server.use('/actions', actions);
+server.use('/projects', projects);
 
 server.listen(port, () => console.log(`Server is running on port ${port}`));
