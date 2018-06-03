@@ -12,7 +12,6 @@ const sendError = (status, message, res) => {
 };
 
 router.post('/', (req, res) => {
-  const { id } = req.params;
   const newProject = req.body;
 
   if (newProject.name.length < 1 || newProject.description.length < 1) {
@@ -35,6 +34,19 @@ router.get('/', (req, res) => {
     .get()  
     .then(projects => {
       res.json(projects);
+    })
+    .catch(error => {
+      sendError(500, "Something went terribly wrong!", res);
+    });
+})
+
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+
+  db
+    .get(id)
+    .then(project => {
+      res.json(project);
     })
     .catch(error => {
       sendError(500, "Something went terribly wrong!", res);
