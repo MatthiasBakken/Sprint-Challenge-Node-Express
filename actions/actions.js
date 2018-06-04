@@ -80,4 +80,26 @@ router.put('/:id', (req, res) => {
   };
 });
 
+router.delete('/:id', (req, res) => {
+  const { id } = req.params;
+
+  db
+    .get(id)
+    .then(action => {
+      db
+        .remove(id)
+        .then(result => {
+          if (result === 0) {
+            sendError(404, "Action could not be located for destruction.", res);
+            return;
+          } else {
+            res.json(action);
+          }
+        })
+        .catch(error => {
+          sendError(500, "Something terrible went wrong!", res);
+        });
+    });
+});
+
 module.exports = router;
