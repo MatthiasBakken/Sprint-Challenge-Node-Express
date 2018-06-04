@@ -11,6 +11,29 @@ const sendError = (status, message, res) => {
   res.status(status).json({ errorMessage: message });
 };
 
+router.post('/', (req, res) => {
+  const { completed, description, notes, project_id } = req.body;
+  const newAction = { completed, description, notes, project_id };
+
+  if (!newAction.description ||
+    !newAction.notes ||
+    !project_id ||
+    newAction.description.length < 1 ||
+    newAction.notes.length < 1) {
+    sendError(400, "Action is missing project ID, description and/or notes.", res);
+    return;
+  } else {
+    db
+      .insert(newAction)
+      .then(action => {
+        res.status(201).json(newAction);
+      })
+      .catch(error => {
+        sendError(500, "Something went terribly wrong!", res);
+      });
+  };
+});
+
 router.get('/', (req, res) => {
   db
     .get()  
