@@ -58,5 +58,26 @@ router.get('/:id', (req, res) => {
     .catch(error => {
       sendError(404, "Action for given ID not found.", res);
     });
-})
+});
+
+router.put('/:id', (req, res) => {
+  const { id } = req.params;
+  const { project_id, notes, description, completed } = req.body;
+  const updatedAction = { project_id, notes, description, completed };
+
+  if (!notes || !description || !project_id) {
+    sendError(404, "Missing project ID, name and/or description.", res);
+    return;
+  } else {
+    db
+      .update(id, updatedAction)
+      .then(update => {
+        res.json(updatedAction);
+      })
+      .catch(error => {
+        sendError(500, "Something went terribly wrong!", res);
+      });
+  };
+});
+
 module.exports = router;
