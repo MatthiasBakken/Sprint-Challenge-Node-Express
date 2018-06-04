@@ -28,12 +28,12 @@ router.get('/:id', (req, res) => {
   db
     .get(id)
     .then(action => {
-      console.log(action.description);
-      console.log(action.notes);
+      // console.log(action.description);
+      // console.log(action.notes);
       res.json(action);
     })
     .catch(error => {
-      sendError(404, "Action not found with given ID.", res);
+      sendError(404, "Action for given ID not found.", res);
     });
 })
 module.exports = router;
