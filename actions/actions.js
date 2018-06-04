@@ -22,4 +22,18 @@ router.get('/', (req, res) => {
     });
 })
 
+router.get('/:id', (req, res) => {
+  const { id } = req.params;
+  
+  db
+    .get(id)
+    .then(action => {
+      console.log(action.description);
+      console.log(action.notes);
+      res.json(action);
+    })
+    .catch(error => {
+      sendError(404, "Action not found with given ID.", res);
+    });
+})
 module.exports = router;
